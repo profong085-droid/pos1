@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>វិក័យប័ត្រ - Visalsok Guest House</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Moul&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Libraries for Exporting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- Control Panel -->
+    <div class="app-header no-print">
+        <select id="templateSelect" class="form-control" style="background-color: #e8f0fe;">
+            <option value="guesthouse">ផ្ទះសំណាក់ (Guest House)</option>
+            <option value="general">ហាងទំនិញទូទៅ (General Store)</option>
+            <option value="gasstation">ស្ថានីយ៍ប្រេងឥន្ធនៈ (Gas Station)</option>
+            <option value="modern">ភោជនីយដ្ឋាន / កាហ្វេ (Restaurant & Cafe)</option>
+            <option value="elegant">ហាងកែសម្ផស្ស / ស្ប៉ា (Elegant)</option>
+            <option value="gold">ហាងមាស / បញ្ចាំ (Classic Gold)</option>
+            <option value="motor">យានដ្ឋានជួសជុល (Motor Repair)</option>
+            <option value="guesthouse2">ផ្ទះសំណាក់ Premium (Guesthouse 2)</option>
+            <option value="gasstation2">ស្ថានីយ៍ប្រេង Corporate (Gas Station 2)</option>
+        </select>
+        
+        <select id="sizeSelect" class="form-control">
+            <option value="size-a5">ទំហំ A5 (តូច)</option>
+            <option value="size-a4">ទំហំ A4 (ធំ)</option>
+        </select>
+
+        <select id="orientationSelect" class="form-control">
+            <option value="portrait">ឈរ (Portrait)</option>
+            <option value="landscape">ផ្តេក (Landscape)</option>
+        </select>
+
+        <button class="btn btn-secondary" onclick="document.getElementById('logoInput').click()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            ប្តូរ Logo
+        </button>
+        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+
+        <button class="btn" id="btnImage">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            Save ជា Image
+        </button>
+        
+        <button class="btn" id="btnPdf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Save ជា PDF
+        </button>
+
+        <button class="btn" onclick="window.print()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print
+        </button>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+        <!-- Receipt Wrapper, defaults to A5 -->
+        <div class="receipt-wrapper size-a5" id="receiptContainer">
+            
+            <!-- Template 1: Guest House (Blue) -->
+            <div class="receipt-content template-blue" id="template-guesthouse">
+                <!-- Header -->
+                <div class="receipt-header">
+                    <div class="logo-section">
+                        <div class="logo-circle" id="logoDisplay">
+                            <div class="logo-vs">V.S</div>
+                            <div class="logo-icon-wrapper">
+                                <svg viewBox="0 0 24 24" width="40" height="40" stroke="var(--primary-blue)" stroke-width="1.5" fill="#fbd14b" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22" fill="#fff"></polyline>
+                                </svg>
+                            </div>
+                            <div class="logo-text1">ផ្ទះសំណាក់</div>
+                            <div class="logo-text2">វិសាលសុខ</div>
+                            <div class="logo-text-en">VISALSOK GUEST HOUSE</div>
+                        </div>
+                        <div class="address">
+                            <div contenteditable="true">ផ្ទះលេខ ០៧ ផ្លូវកៅស៊ូ</div>
+                            <div contenteditable="true">ភូមិទី ១ សង្កាត់ កំពង់ធំ</div>
+                            <div contenteditable="true">ក្រុងស្ទឹងសែន ខេត្តកំពង់ធំ</div>
+                            <div class="room-no" id="roomNoContainer">លេខបន្ទប់ <span class="dots" contenteditable="true" style="min-width: 60px;"></span></div>
+                        </div>
+                    </div>
+                    <div class="title-section">
+                        <h1 class="main-title" contenteditable="true" id="mainTitle">ផ្ទះសំណាក់ វិសាលសុខ</h1>
+                        <h2 class="sub-title" contenteditable="true" id="subTitle">VISALSOK GUEST HOUSE</h2>
+                        <h3 class="slogan" contenteditable="true" id="slogan">មានទឹកក្តៅទឹកត្រជាក់</h3>
+                        <h4 class="receipt-title-wrapper">
+                            <span class="receipt-title" contenteditable="true">វិក័យប័ត្រ</span>
+                        </h4>
+                        <div class="phone-numbers" contenteditable="true">
+                            ០៨៨ ៤៤ ៤៤ ២០៤ <span style="margin: 0 10px;">-</span> ០៤៤ ៤៤ ៤៤ ៤០
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <table class="receipt-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no" id="thCol1">ល.រ<br>Nº</th>
+                            <th class="col-name" id="thCol2">ឈ្មោះទំនិញ<br>Name of Goods</th>
+                            <th class="col-qty" id="thCol3">ចំនួន<br>Quantity</th>
+                            <th class="col-price" id="thCol4">តំលៃរាយ<br>Unit Price</th>
+                            <th class="col-amount" id="thCol5">តំលៃសរុប<br>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>7</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>8</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>9</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>10</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>11</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>12</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>13</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>14</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>15</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="total-label">សរុប</td>
+                            <td contenteditable="true" class="total-amount"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <div class="date-buyer">
+                        <div class="date">
+                            ថ្ងៃទី <span class="dots" contenteditable="true" style="min-width: 30px;"></span> ខែ <span class="dots" contenteditable="true" style="min-width: 30px;"></span> ឆ្នាំ <span class="dots" contenteditable="true" style="min-width: 30px;"></span>
+                        </div>
+                        <div class="buyer-signature">
+                            អ្នកទិញ
+                        </div>
+                    </div>
+                    <div class="seller">
+                        <div class="seller-signature">
+                            អ្នកលក់
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template 2: General Store (Red) -->
+            <div class="receipt-content template-red" id="template-general" style="display: none;">
+                <div class="red-header-title">
+                    <h1 class="red-main-title">វិក័យប័ត្រ</h1>
+                </div>
+                
+                <div class="red-info-box">
+                    <div class="red-info-left">
+                        <div class="red-info-row">
+                            <span class="red-label">អតិថិជន / Customer <span class="colon">:</span></span>
+                            <span class="red-value dots" contenteditable="true"></span>
+                        </div>
+                        <div class="red-info-row">
+                            <span class="red-label">ទូរស័ព្ទ / Mobile <span class="colon">:</span></span>
+                            <span class="red-value dots" contenteditable="true"></span>
+                        </div>
+                        <div class="red-info-row">
+                            <span class="red-label">អាសយដ្ឋាន / Address <span class="colon">:</span></span>
+                            <span class="red-value dots" contenteditable="true">Phnom Penh</span>
+                        </div>
+                    </div>
+                    <div class="red-info-right">
+                        <div class="red-info-row">
+                            <span class="red-label">កាលបរិច្ឆេទ / Date <span class="colon">:</span></span>
+                            <span class="red-value dots" contenteditable="true"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Red Table -->
+                <table class="receipt-table red-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">ល.រ<br>No.</th>
+                            <th class="col-name">បរិយាយ ឈ្មោះទំនិញ<br>Description of Item</th>
+                            <th class="col-qty">ចំនួន<br>Quantity</th>
+                            <th class="col-price">តម្លៃរាយ<br>Unit Price</th>
+                            <th class="col-amount">តម្លៃសរុប<br>Total Amount USD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>7</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>8</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>9</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>10</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>11</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>12</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td>13</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="red-thanks" rowspan="3" style="vertical-align: top; padding-top: 10px;">
+                                សូមអរគុណសម្រាប់ការទិញទំនិញពីយើងខ្ញុំ
+                            </td>
+                            <td class="red-total-label">តម្លៃសរុប / TOTAL :</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td class="red-total-label">តម្លៃប្រាក់កក់ / DEPOSIT :</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td class="red-total-label">តម្លៃប្រាក់នៅខ្វះ / BALANCE :</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Red Footer -->
+                <div class="footer red-footer">
+                    <div class="buyer-signature">
+                        ឈ្មោះអ្នកទិញ
+                    </div>
+                    <div class="seller-signature">
+                        អ្នកលក់
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template 3: Restaurant / Cafe -->
+            <div class="receipt-content template-restaurant" id="template-modern" style="display: none;">
+                <div class="restaurant-header">
+                    <h1 class="rest-main-title" contenteditable="true">ភោជនីយដ្ឋាន រសជាតិឯក</h1>
+                    <p class="rest-sub-title" contenteditable="true">THE BEST RESTAURANT & CAFE</p>
+                    <p class="rest-address" contenteditable="true">ផ្ទះលេខ 123, ផ្លូវ 456, រាជធានីភ្នំពេញ | ទូរស័ព្ទ: 012 345 678</p>
+                </div>
+                
+                <div class="rest-divider"></div>
+                <h2 class="rest-receipt-title" contenteditable="true">វិក័យប័ត្រ / INVOICE</h2>
+
+                <div class="rest-info-grid">
+                    <div class="rest-info-item">
+                        <span class="rest-label">លេខតុ / Table:</span>
+                        <span class="rest-val dots" contenteditable="true">T-05</span>
+                    </div>
+                    <div class="rest-info-item">
+                        <span class="rest-label">កាលបរិច្ឆេទ / Date:</span>
+                        <span class="rest-val dots" contenteditable="true"></span>
+                    </div>
+                </div>
+
+                <table class="receipt-table rest-table">
+                    <thead>
+                        <tr>
+                            <th class="col-qty">ចំនួន<br>Qty</th>
+                            <th class="col-name">បរិយាយមុខម្ហូប<br>Description</th>
+                            <th class="col-price">តម្លៃ<br>Price</th>
+                            <th class="col-amount">សរុប<br>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true" style="text-align: left;"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="no-border"></td>
+                            <td class="rest-total-label">សរុប / Subtotal:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="no-border"></td>
+                            <td class="rest-total-label">បញ្ចុះតម្លៃ / Discount:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="no-border"></td>
+                            <td class="rest-total-label rest-grand-total">សរុបទាំងអស់ / Total:</td>
+                            <td contenteditable="true" class="rest-grand-total-val"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="rest-footer">
+                    <div class="signature-box">
+                        <div class="sig-line" contenteditable="true">ហត្ថលេខាអ្នកទិញ</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="sig-line" contenteditable="true">ហត្ថលេខាអ្នកលក់</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template 4: Elegant Green -->
+            <div class="receipt-content template-elegant" id="template-elegant" style="display: none;">
+                <div class="elegant-header">
+                    <h1 class="elegant-main-title" contenteditable="true">មជ្ឈមណ្ឌលកែសម្ផស្ស</h1>
+                    <p class="elegant-sub-title" contenteditable="true">Beauty Salon & Spa</p>
+                </div>
+                
+                <div class="elegant-customer-info">
+                    <div>អតិថិជន / Customer: <span class="dots" contenteditable="true" style="width: 150px;"></span></div>
+                    <div>កាលបរិច្ឆេទ / Date: <span class="dots" contenteditable="true" style="width: 100px;"></span></div>
+                </div>
+
+                <table class="receipt-table elegant-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">ល.រ<br>No</th>
+                            <th class="col-name">សេវាកម្ម / ផលិតផល<br>Service / Product</th>
+                            <th class="col-qty">ចំនួន<br>Qty</th>
+                            <th class="col-price">តម្លៃ<br>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true">1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">7</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">8</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="no-border"></td>
+                            <td class="elegant-total">សរុប / Total:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="elegant-footer">
+                    <div class="signature-box">
+                        <div class="sig-line" contenteditable="true">ហត្ថលេខាអតិថិជន</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="sig-line" contenteditable="true">ហត្ថលេខាអ្នកទទួល</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template 5: Classic Gold -->
+            <div class="receipt-content template-gold" id="template-gold" style="display: none;">
+                <div class="gold-header">
+                    <div class="gold-logo-box">
+                        <h1 class="gold-main-title" contenteditable="true">ហាងមាស ពេជ្រ</h1>
+                        <h2 class="gold-sub-title" contenteditable="true">JEWELRY SHOP</h2>
+                    </div>
+                    <div class="gold-receipt-title">
+                        <span contenteditable="true">វិក័យប័ត្រ</span>
+                    </div>
+                </div>
+
+                <div class="gold-info">
+                    <div class="gold-info-row">
+                        <span>អតិថិជន / Customer: </span><span class="dots" contenteditable="true" style="flex:1;"></span>
+                    </div>
+                    <div class="gold-info-row">
+                        <span>ទូរស័ព្ទ / Tel: </span><span class="dots" contenteditable="true" style="width: 150px;"></span>
+                        <span style="margin-left: 20px;">កាលបរិច្ឆេទ / Date: </span><span class="dots" contenteditable="true" style="width: 150px;"></span>
+                    </div>
+                </div>
+
+                <table class="receipt-table gold-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">ល.រ</th>
+                            <th class="col-name">បរិយាយ<br>Description</th>
+                            <th class="col-qty">ទម្ងន់<br>Weight</th>
+                            <th class="col-price">តម្លៃ<br>Price</th>
+                            <th class="col-amount">សរុប<br>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true">1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">7</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="gold-total-label">សរុប / Total:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="gold-footer">
+                    <p contenteditable="true">ទំនិញទិញហើយមិនអាចប្តូរវិញបានទេ</p>
+                </div>
+            </div>
+
+            <!-- Template 6: Motor Repair -->
+            <div class="receipt-content template-motor" id="template-motor" style="display: none;">
+                <div class="motor-header">
+                    <h1 class="motor-main-title" contenteditable="true">យានដ្ឋាន ជាងសំណាង</h1>
+                    <p class="motor-sub-title" contenteditable="true">ជួសជុលម៉ូតូគ្រប់ប្រភេទ និងប្តូរប្រេងម៉ាស៊ីន</p>
+                </div>
+                
+                <div class="motor-info-box">
+                    <div class="motor-info-left">
+                        <div>ឈ្មោះអតិថិជន: <span class="dots" contenteditable="true"></span></div>
+                        <div>ស្លាកលេខ: <span class="dots" contenteditable="true"></span></div>
+                        <div>ម៉ាករថយន្ត/ម៉ូតូ: <span class="dots" contenteditable="true"></span></div>
+                    </div>
+                    <div class="motor-info-right">
+                        <div>កាលបរិច្ឆេទ: <span class="dots" contenteditable="true"></span></div>
+                        <div>លេខវិក័យប័ត្រ: <span class="dots" contenteditable="true"></span></div>
+                    </div>
+                </div>
+
+                <table class="receipt-table motor-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">ល.រ</th>
+                            <th class="col-name">គ្រឿងបន្លាស់ / សេវាកម្ម (Description)</th>
+                            <th class="col-qty">ចំនួន</th>
+                            <th class="col-price">តម្លៃរាយ</th>
+                            <th class="col-amount">សរុប</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true">1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">7</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="motor-total-label">សរុបថ្លៃគ្រឿងបន្លាស់:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="motor-total-label">ថ្លៃសេវាកម្ម/ពលកម្ម:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="motor-total-label motor-grand">សរុបទាំងអស់:</td>
+                            <td contenteditable="true" class="motor-grand"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- Template 7: Guesthouse Premium -->
+            <div class="receipt-content template-gh2" id="template-guesthouse2" style="display: none;">
+                <div class="gh2-header">
+                    <h1 class="gh2-main-title" contenteditable="true">ROYAL HOTEL & SUITES</h1>
+                    <p class="gh2-sub-title" contenteditable="true">សណ្ឋាគារ និង ផ្ទះសំណាក់លំដាប់ខ្ពស់</p>
+                </div>
+                
+                <h2 class="gh2-receipt-title" contenteditable="true">វិក័យប័ត្រ / INVOICE</h2>
+
+                <div class="gh2-info-grid">
+                    <div>អតិថិជន / Guest: <span class="dots" contenteditable="true"></span></div>
+                    <div>បន្ទប់ / Room No: <span class="dots" contenteditable="true"></span></div>
+                    <div>ថ្ងៃចូល / Check-in: <span class="dots" contenteditable="true"></span></div>
+                    <div>ថ្ងៃចេញ / Check-out: <span class="dots" contenteditable="true"></span></div>
+                </div>
+
+                <table class="receipt-table gh2-table">
+                    <thead>
+                        <tr>
+                            <th class="col-no">No.</th>
+                            <th class="col-name">បរិយាយ / Description</th>
+                            <th class="col-qty">ចំនួនយប់/Qty</th>
+                            <th class="col-price">តម្លៃ/Price</th>
+                            <th class="col-amount">សរុប/Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true">1</td><td contenteditable="true">ថ្លៃបន្ទប់</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">2</td><td contenteditable="true">ទឹកបរិសុទ្ធ</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">3</td><td contenteditable="true">ភេសជ្ជៈ</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">4</td><td contenteditable="true">អាហារ</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">6</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="no-border"></td>
+                            <td class="gh2-total-label">Grand Total:</td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="gh2-footer">
+                    <p contenteditable="true">សូមអរគុណសម្រាប់ការស្នាក់នៅ! Thank you for staying with us!</p>
+                </div>
+            </div>
+
+            <!-- Template 8: Gas Station Corporate -->
+            <div class="receipt-content template-gas2" id="template-gasstation2" style="display: none;">
+                <div class="gas2-header">
+                    <div class="gas2-logo-box">
+                        <h1 class="gas2-main-title" contenteditable="true">PTT GAS STATION</h1>
+                        <p class="gas2-address" contenteditable="true">សាខាផ្លូវជាតិលេខ១</p>
+                    </div>
+                    <div class="gas2-receipt-title">
+                        <span contenteditable="true">RECEIPT</span><br>
+                        <span class="gas2-sub" contenteditable="true">វិក័យប័ត្រ</span>
+                    </div>
+                </div>
+
+                <div class="gas2-info">
+                    <div>កាលបរិច្ឆេទ/Date: <span class="dots" contenteditable="true"></span></div>
+                    <div>លេខទូ/Pump No: <span class="dots" contenteditable="true"></span></div>
+                    <div>លេខរថយន្ត/Plate No: <span class="dots" contenteditable="true"></span></div>
+                </div>
+
+                <table class="receipt-table gas2-table">
+                    <thead>
+                        <tr>
+                            <th class="col-name">ប្រភេទប្រេង<br>Fuel Type</th>
+                            <th class="col-qty">ចំណុះ(លីត្រ)<br>Volume (L)</th>
+                            <th class="col-price">តម្លៃ/លីត្រ<br>Unit Price</th>
+                            <th class="col-amount">សរុប<br>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td contenteditable="true">សាំងស៊ុបពែរ (Super)</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">សាំងធម្មតា (Regular)</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true">ម៉ាស៊ូត (Diesel)</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                        <tr><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="no-border"></td>
+                            <td class="gas2-total-label">Total Amount:</td>
+                            <td contenteditable="true" class="gas2-grand"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="gas2-footer">
+                    <p contenteditable="true">Drive Safely! សូមធ្វើដំណើរដោយសុវត្ថិភាព។</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
